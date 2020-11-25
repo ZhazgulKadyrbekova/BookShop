@@ -1,0 +1,4 @@
+com/example/shoop/controller/BookController.class
+com/example/shoop/ShopApplication.class
+com/example/shoop/repository/BookRepository.class
+com/example/shoop/entity/BookEntity.class
