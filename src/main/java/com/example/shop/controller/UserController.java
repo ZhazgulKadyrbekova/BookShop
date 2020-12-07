@@ -36,17 +36,13 @@ public class UserController {
         return new ResponseEntity<>(userService.getByEmail(mail), HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<UserEntity>> getAllByParam(HttpServletRequest request){
-        String name = request.getParameter("name");
-        String isActive = request.getParameter("isActive");
+    @GetMapping("/get")
+    public ResponseEntity<List<UserEntity>> getAllByParam(@RequestParam(required = false) String name){
 
         Set <UserEntity> user = new LinkedHashSet<>(userService.getAll());
 
         if (name != null)
             user.retainAll(userService.getAllByName(name));
-        if (isActive != null)
-            user.retainAll(userService.getAll());
 
         return new ResponseEntity<>(new ArrayList<>(user), HttpStatus.OK);
     }

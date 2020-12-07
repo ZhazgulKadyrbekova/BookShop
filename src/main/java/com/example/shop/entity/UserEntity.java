@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class UserEntity extends Base{
 
     @Column(name = "email", unique = true, nullable = false)
