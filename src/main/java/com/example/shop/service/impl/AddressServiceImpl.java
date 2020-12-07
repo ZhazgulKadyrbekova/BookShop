@@ -33,8 +33,8 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setCity(addressEntity.getCity());
         addressEntity.setDistrict(addressEntity.getDistrict());
         addressEntity.setStreet(addressEntity.getStreet());
-        addressEntity.setHouse_no(addressEntity.getHouse_no());
-        addressEntity.setApartment_no(addressEntity.getApartment_no());
+        addressEntity.setHouse(addressEntity.getHouse());
+        addressEntity.setApartment(addressEntity.getApartment());
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
@@ -64,8 +64,8 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setCity(address.getCity());
         addressEntity.setDistrict(address.getDistrict());
         addressEntity.setStreet(address.getStreet());
-        addressEntity.setHouse_no(address.getHouse_no());
-        addressEntity.setApartment_no(address.getApartment_no());
+        addressEntity.setHouse(address.getHouse());
+        addressEntity.setApartment(address.getApartment());
         addressEntity.setDeleted(address.isDeleted());
 
         UserEntity user = userRepository.findByEmail(email);

@@ -24,8 +24,8 @@ public class AddressEntity extends Base{
     private String street;
 
     @Column(name = "house_number", nullable = false)
-    private String house_no;
+    private String house;
 
     @Column(name = "apartment_number")
-    private String apartment_no;
+    private String apartment;
 }
