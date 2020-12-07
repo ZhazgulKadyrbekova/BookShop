@@ -36,7 +36,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getByEmail(mail), HttpStatus.OK);
     }
 
-    @GetMapping("/getAll")
+    @GetMapping("/get")
     public ResponseEntity<List<UserEntity>> getAllByParam(HttpServletRequest request){
         String name = request.getParameter("name");
         String isActive = request.getParameter("isActive");
