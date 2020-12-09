@@ -12,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 
 public class OrderDTO {
-    private Integer id;
     private Integer address;
     private Integer user;
     private List<Integer> books;

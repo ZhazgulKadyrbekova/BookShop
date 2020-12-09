@@ -30,11 +30,11 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryEntity createCategory(CategoryEntity categoryEntity, String email) {
         CategoryEntity category = new CategoryEntity();
-        category.setName(category.getName());
+        category.setName(categoryEntity.getName());
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CATEGORY", "CREATE id:" + category.getID().toString(), user);
+                HistoryEntity("CATEGORY", "CREATE " + category.getName(), user);
         historyRepository.save(history);
 
         return categoryRepository.save(category);
@@ -57,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CATEGORY", "UPDATE id:" + categoryEntity.getID().toString(), user);
+                HistoryEntity("CATEGORY", "UPDATE " + categoryEntity.getName(), user);
         historyRepository.save(history);
 
         return categoryRepository.save(category);
@@ -74,7 +74,7 @@ public class CategoryServiceImpl implements CategoryService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CATEGORY", "DELETE id:" + category.getID().toString(), user);
+                HistoryEntity("CATEGORY", "DELETE " + category.getName(), user);
         historyRepository.save(history);
 
         return "Category number " + id + " has been deleted!";

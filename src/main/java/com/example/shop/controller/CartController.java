@@ -35,9 +35,9 @@ public class CartController {
         return new ResponseEntity<>(cartService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update}")
-    public ResponseEntity<CartEntity> updateCart(@RequestBody CartDTO cartEntity, Principal principal) throws Exception{
-        return new ResponseEntity<>(cartService.update(cartEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CartEntity> updateCart(@PathVariable Integer id, @RequestBody CartDTO cartEntity, Principal principal) throws Exception{
+        return new ResponseEntity<>(cartService.update(id, cartEntity, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

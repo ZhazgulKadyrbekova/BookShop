@@ -1,8 +1,11 @@
 package com.example.shop.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.shop.dto.BookDTO;
 import com.example.shop.entity.BookEntity;
 import com.example.shop.entity.HistoryEntity;
+import com.example.shop.entity.ImageEntity;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.exception.AuthorNotFoundException;
 import com.example.shop.exception.BookNotFoundException;
@@ -11,8 +14,13 @@ import com.example.shop.repository.*;
 import com.example.shop.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -30,6 +38,9 @@ public class BookServiceImpl implements BookService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
     public List<BookEntity> getAll() {
@@ -52,7 +63,7 @@ public class BookServiceImpl implements BookService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("BOOK", "CREATE id:" + book.getID().toString(), user);
+                HistoryEntity("BOOK", "CREATE " + book.getName(), user);
         historyRepository.save(history);
 
         return bookRepository.save(newBook);
@@ -68,11 +79,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookEntity update(BookDTO bookDTO, String email) {
-        BookEntity book = bookRepository.findById(bookDTO.getID())
-                .orElseThrow(() -> new BookNotFoundException("Book id " + bookDTO.getID() + " not found!"));
+    public BookEntity update(Integer id, BookDTO bookDTO, String email) {
+        BookEntity book = bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException("Book id " + id + " not found!"));
         if (book.isDeleted())
-            throw new BookNotFoundException("Book id " + bookDTO.getID() + " not found!");
+            throw new BookNotFoundException("Book id " + id + " not found!");
 
         book.setName(book.getName());
         book.setAuthor(authorRepository.findById(bookDTO.getAuthor())
@@ -87,10 +98,47 @@ public class BookServiceImpl implements BookService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("BOOK", "UPDATE id:" + book.getID().toString(), user);
+                HistoryEntity("BOOK", "UPDATE " + book.getName(), user);
         historyRepository.save(history);
 
         return bookRepository.save(book);
+    }
+
+    @Override
+    public BookEntity setImage(MultipartFile multipartFile, String email, Integer bookId) throws IOException {
+        final String urlKey = "cloudinary://122578963631996:RKDo37y7ru4nnuLsBGQbwBUk65o@zhazgul/";
+
+        ImageEntity image = new ImageEntity();
+        File file;
+        try {
+            BookEntity book = bookRepository.findById(bookId)
+                    .orElseThrow(() -> new BookNotFoundException("Book id " + bookId + " not found"));
+
+            file = Files.createTempFile(System.currentTimeMillis() + "",
+                    multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().length()-4))
+                    .toFile();
+            multipartFile.transferTo(file);
+
+            Cloudinary cloudinary = new Cloudinary(urlKey);
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+            image.setName((String) uploadResult.get("public_id"));
+            image.setUrl((String) uploadResult.get("url"));
+            image.setFormat((String) uploadResult.get("format"));
+            imageRepository.save(image);
+
+            book.setImage(image);
+
+            UserEntity user = userRepository.findByEmail(email);
+            HistoryEntity history = new
+                    HistoryEntity("BOOK", "SET IMAGE " + book.getName(), user);
+            historyRepository.save(history);
+
+            return bookRepository.save(book);
+
+        } catch (IOException e) {
+            throw new IOException("Unable to set an image to book");
+        }
+
     }
 
     @Override
@@ -105,7 +153,7 @@ public class BookServiceImpl implements BookService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("BOOK", "DELETE id:" + id.toString(), user);
+                HistoryEntity("BOOK", "DELETE " + book.getName(), user);
         historyRepository.save(history);
 
         return "Book number " + id + " has been deleted!";

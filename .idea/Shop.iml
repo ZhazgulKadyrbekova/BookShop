@@ -149,5 +149,6 @@
     <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-ui:2.6.1" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.postgresql:postgresql:42.2.16" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.checkerframework:checker-qual:3.5.0" level="project" />
+    <orderEntry type="library" name="Maven: com.cloudinary:cloudinary-core:1.22.1" level="project" />
   </component>
 </module>

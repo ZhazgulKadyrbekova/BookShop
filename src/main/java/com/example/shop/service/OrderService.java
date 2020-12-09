@@ -9,6 +9,6 @@ public interface OrderService {
     List<OrderEntity> getAll();
     OrderEntity createOrder (OrderDTO orderEntity, String email) throws Exception;
     OrderEntity findById(Integer id) throws Exception;
-    OrderEntity update(OrderDTO orderEntity, String email) throws Exception;
+    OrderEntity update(Integer id, OrderDTO orderEntity, String email) throws Exception;
     String deleteById(Integer id, String email);
 }

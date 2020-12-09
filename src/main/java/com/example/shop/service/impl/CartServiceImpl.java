@@ -51,7 +51,7 @@ public class CartServiceImpl implements CartService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CART", "CREATE id:" + cart.getID().toString(), user);
+                HistoryEntity("CART", "CREATE", user);
         historyRepository.save(history);
 
         return cartRepository.save(cart);
@@ -67,11 +67,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public CartEntity update(CartDTO cartEntity, String email) {
-        CartEntity cart = cartRepository.findById(cartEntity.getId())
-                .orElseThrow(() -> new CartNotFoundException("Cart id " + cartEntity.getId() + " not found!"));
+    public CartEntity update(Integer id, CartDTO cartEntity, String email) {
+        CartEntity cart = cartRepository.findById(id)
+                .orElseThrow(() -> new CartNotFoundException("Cart id " + id + " not found!"));
         if (cart.isDeleted())
-            throw new CartNotFoundException("Cart id " + cartEntity.getId() + " not found!");
+            throw new CartNotFoundException("Cart id " + id + " not found!");
 
         cart.setTotalPrice(cartEntity.getTotalPrice());
         cart.setUser(userRepository.findById(cartEntity.getUser())
@@ -85,7 +85,7 @@ public class CartServiceImpl implements CartService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CART", "UPDATE id:" + cart.getID().toString(), user);
+                HistoryEntity("CART", "UPDATE", user);
         historyRepository.save(history);
 
         return cartRepository.save(cart);
@@ -102,7 +102,7 @@ public class CartServiceImpl implements CartService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("CART", "DELETE id:" + cart.getID().toString(), user);
+                HistoryEntity("CART", "DELETE", user);
         historyRepository.save(history);
 
         return "Cart number " + id + " has been deleted!";

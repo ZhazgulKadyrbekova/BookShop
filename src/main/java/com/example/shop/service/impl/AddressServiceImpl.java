@@ -38,7 +38,7 @@ public class AddressServiceImpl implements AddressService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ADDRESS", "CREATE id:" + addressEntity.getID().toString(), user);
+                HistoryEntity("ADDRESS", "CREATE ", user);
         historyRepository.save(history);
 
         return addressRepository.save(addressEntity);
@@ -70,7 +70,7 @@ public class AddressServiceImpl implements AddressService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ADDRESS", "UPDATE id:" + addressEntity.getID().toString(), user);
+                HistoryEntity("ADDRESS", "UPDATE", user);
         historyRepository.save(history);
 
         return addressRepository.save(addressEntity);
@@ -88,7 +88,7 @@ public class AddressServiceImpl implements AddressService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ADDRESS", "DELETE id:" + id.toString(), user);
+                HistoryEntity("ADDRESS", "DELETE", user);
         historyRepository.save(history);
 
         return "Address number " + id + " has been deleted!";

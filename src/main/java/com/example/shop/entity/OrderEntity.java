@@ -14,19 +14,19 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "orderr")
+@Table(name = "`order`")
 public class OrderEntity extends Base{
 
     @OneToOne
-    @JoinColumn(name = "address_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private AddressEntity address;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_id", referencedColumnName = "id", nullable = false)
+    @OneToMany
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     private List<BookEntity> books;
 
     @Column(name = "total_price", nullable = false)

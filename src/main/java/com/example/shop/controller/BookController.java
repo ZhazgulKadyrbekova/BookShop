@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 
@@ -32,9 +34,15 @@ public class BookController {
         return new ResponseEntity<>(bookService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<BookEntity> updateBook(@RequestBody BookDTO bookEntity, Principal principal) throws Exception{
-        return new ResponseEntity<>(bookService.update(bookEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<BookEntity> updateBook(@PathVariable Integer id, @RequestBody BookDTO bookEntity, Principal principal) throws Exception{
+        return new ResponseEntity<>(bookService.update(id, bookEntity, principal.getName()), HttpStatus.OK);
+    }
+
+    @PutMapping("/setImage/{id}")
+    public ResponseEntity<BookEntity> setImage(@RequestParam MultipartFile multipartFile,
+                                               Principal principal, @PathVariable("id") Integer bookId) throws IOException {
+        return new ResponseEntity<>(bookService.setImage(multipartFile, principal.getName(), bookId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

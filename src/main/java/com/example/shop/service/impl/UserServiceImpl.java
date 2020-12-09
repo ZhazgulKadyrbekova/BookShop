@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
 
             HistoryEntity history = new
-                    HistoryEntity("USER", "CHANGE PASSWORD id:" + user.getID().toString(), user);
+                    HistoryEntity("USER", "CHANGE PASSWORD " + user.getEmail(), user);
             historyRepository.save(history);
 
             return true;
@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
         UserEntity userEntity = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("USER", "BLOCK id:" + user.getID().toString(), userEntity);
+                HistoryEntity("USER", "BLOCK " + user.getName(), userEntity);
         historyRepository.save(history);
 
         return "User id " + id + " has been deleted";

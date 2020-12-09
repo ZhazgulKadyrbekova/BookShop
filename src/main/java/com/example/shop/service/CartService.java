@@ -10,6 +10,6 @@ public interface CartService {
     List<CartEntity> getAll();
     CartEntity createCart (CartDTO cartEntity, String email) throws Exception;
     CartEntity findById(Integer id) throws Exception;
-    CartEntity update(CartDTO cartEntity, String email) throws Exception;
+    CartEntity update(Integer id, CartDTO cartEntity, String email) throws Exception;
     String deleteById(Integer id, String email);
 }

@@ -13,15 +13,15 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "carts")
+@Table(name = "cart")
 public class CartEntity extends Base{
 
     @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id", referencedColumnName = "id", nullable = false)
+    @OneToMany
+    @JoinColumn(name = "cart_id", referencedColumnName = "id")
     private List<BookEntity> books;
 
     @Column(name = "total_price")

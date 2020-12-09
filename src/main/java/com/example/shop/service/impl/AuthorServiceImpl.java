@@ -36,7 +36,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("AUTHOR", "CREATE id:" + authorEntity.getID().toString(), user);
+                HistoryEntity("AUTHOR", "CREATE " + authorEntity.getName(), user);
         historyRepository.save(history);
 
         return authorRepository.save(authorEntity);
@@ -63,7 +63,7 @@ public class AuthorServiceImpl implements AuthorService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("AUTHOR", "UPDATE id:" + author.getID().toString(), user);
+                HistoryEntity("AUTHOR", "UPDATE " + author.getName(), user);
         historyRepository.save(history);
 
         return  authorRepository.save(authorEntity);
@@ -80,9 +80,9 @@ public class AuthorServiceImpl implements AuthorService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("AUTHOR", "DELETE id:" + id.toString(), user);
+                HistoryEntity("AUTHOR", "DELETE " + author.getName(), user);
         historyRepository.save(history);
 
-        return "Author number " + id + "has been deleted!";
+        return "Author id " + id + "has been successfully deleted!";
     }
 }

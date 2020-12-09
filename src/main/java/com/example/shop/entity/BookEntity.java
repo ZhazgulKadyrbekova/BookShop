@@ -19,7 +19,7 @@ public class BookEntity extends Base{
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     private AuthorEntity author;
 
     @Column(name = "price", nullable = false)
@@ -35,7 +35,10 @@ public class BookEntity extends Base{
     private Integer quantity;
 
     @ManyToOne
-    @JoinColumn(name = "category_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private CategoryEntity category;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private ImageEntity image;
 }

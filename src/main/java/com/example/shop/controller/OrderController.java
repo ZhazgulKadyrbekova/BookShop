@@ -36,9 +36,9 @@ public class OrderController {
         return new ResponseEntity<>(orderService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<OrderEntity> updateOrder(@RequestBody OrderDTO orderEntity, Principal principal) throws Exception{
-        return new ResponseEntity<>(orderService.update(orderEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<OrderEntity> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderEntity, Principal principal) throws Exception{
+        return new ResponseEntity<>(orderService.update(id, orderEntity, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

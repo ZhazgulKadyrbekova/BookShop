@@ -116,6 +116,11 @@
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-core</artifactId>
+            <version>1.22.1</version>
+        </dependency>
     </dependencies>
 
     <build>

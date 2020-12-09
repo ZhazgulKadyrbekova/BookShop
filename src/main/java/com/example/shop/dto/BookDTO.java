@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 
 public class BookDTO {
-    private Integer ID;
     private String name;
     private Integer author;
     private BigDecimal price;

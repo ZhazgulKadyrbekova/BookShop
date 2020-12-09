@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ORDER", "CREATE id:" + orderEntity.getID().toString(), user);
+                HistoryEntity("ORDER", "CREATE", user);
         historyRepository.save(history);
 
         return orderRepository.save(orderEntity);
@@ -68,11 +68,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity update(OrderDTO orderDTO, String email) {
-        OrderEntity order = orderRepository.findById(orderDTO.getId())
-                .orElseThrow(() -> new OrderNotFoundException("Order id " + orderDTO.getId() + " not found!"));
+    public OrderEntity update(Integer id, OrderDTO orderDTO, String email) {
+        OrderEntity order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order id " + id + " not found!"));
         if (order.isDeleted())
-            throw  new OrderNotFoundException("Order id " + orderDTO.getId() + " not found!");
+            throw  new OrderNotFoundException("Order id " + id + " not found!");
 
         order.setAddress(addressRepository.findById(orderDTO.getAddress())
                 .orElseThrow(() -> new AddressNotFoundException("Order id " + orderDTO.getAddress() + " not found!")));
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ORDER", "UPDATE id:" + order.getID().toString(), user);
+                HistoryEntity("ORDER", "UPDATE", user);
         historyRepository.save(history);
 
         return orderRepository.save(order);
@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("ORDER", "DELETE id:" + id.toString(), user);
+                HistoryEntity("ORDER", "DELETE", user);
         historyRepository.save(history);
 
         return "Order number " + id + " has been deleted!";
