@@ -7,8 +7,9 @@ import java.util.List;
 
 public interface OrderService {
     List<OrderEntity> getAll();
-    OrderEntity createOrder (OrderDTO orderEntity, String email) throws Exception;
-    OrderEntity findById(Integer id) throws Exception;
-    OrderEntity update(Integer id, OrderDTO orderEntity, String email) throws Exception;
+    List<OrderEntity> findAllByEmail(String email);
+    OrderEntity createOrder (OrderDTO orderEntity, String email);
+    OrderEntity findById(Integer id);
+    OrderEntity update(Integer id, OrderDTO orderEntity, String email);
     String deleteById(Integer id, String email);
 }

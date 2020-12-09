@@ -1,5 +1,6 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.dto.AddressDTO;
 import com.example.shop.entity.AddressEntity;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.UserEntity;
@@ -28,7 +29,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressEntity createAddress(AddressEntity address, String email) {
+    public AddressEntity createAddress(AddressDTO address, String email) {
         AddressEntity addressEntity = new AddressEntity();
         addressEntity.setCity(address.getCity());
         addressEntity.setDistrict(address.getDistrict());
@@ -56,18 +57,18 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressEntity update(AddressEntity address, String email) {
-        AddressEntity addressEntity = addressRepository.findById(address.getID())
-                .orElseThrow(() -> new AddressNotFoundException("Address id " + address.getID() + " not found!"));
+    public AddressEntity update(Integer id, AddressDTO address, String email) {
+        AddressEntity addressEntity = addressRepository.findById(id)
+                .orElseThrow(() -> new AddressNotFoundException("Address id " + id + " not found!"));
         if (addressEntity.isDeleted()) {
-            throw new AddressNotFoundException("Address id " + address.getID() + " not found!");
+            throw new AddressNotFoundException("Address id " + id + " not found!");
         }
         addressEntity.setCity(address.getCity());
         addressEntity.setDistrict(address.getDistrict());
         addressEntity.setStreet(address.getStreet());
         addressEntity.setHouse(address.getHouse());
         addressEntity.setApartment(address.getApartment());
-        addressEntity.setDeleted(address.isDeleted());
+        addressEntity.setDeleted(false);
         addressRepository.save(addressEntity);
 
         UserEntity user = userRepository.findByEmail(email);

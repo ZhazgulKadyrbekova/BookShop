@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.dto.AddressDTO;
 import com.example.shop.entity.AddressEntity;
 import com.example.shop.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,18 +23,19 @@ public class AddressController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AddressEntity> getById(@PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<AddressEntity> getById(@PathVariable("id") Integer id) {
         return new ResponseEntity<>(addressService.findById(id),HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AddressEntity> addAddress(@RequestBody AddressEntity address, Principal principal) {
+    public ResponseEntity<AddressEntity> addAddress(@RequestBody AddressDTO address, Principal principal) {
         return new ResponseEntity<>(addressService.createAddress(address, principal.getName()), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<AddressEntity> updateAddress(@RequestBody AddressEntity address, Principal principal) throws Exception {
-        return new ResponseEntity<>(addressService.update(address, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AddressEntity> updateAddress(@PathVariable Integer id,
+            @RequestBody AddressDTO address, Principal principal) {
+        return new ResponseEntity<>(addressService.update(id, address, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

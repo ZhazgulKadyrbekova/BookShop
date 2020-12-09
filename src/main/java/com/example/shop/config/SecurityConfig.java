@@ -32,16 +32,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers("/user/block/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "/book/add").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT, "/book/update/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/book/delete/**").hasRole("ADMIN")
-                .antMatchers("/category/add").hasRole("ADMIN")
-                .antMatchers("/category/update/**").hasRole("ADMIN")
-                .antMatchers("/category/delete/**").hasRole("ADMIN")
-                .antMatchers("/author/add").hasRole("ADMIN")
-                .antMatchers("/author/update/**").hasRole("ADMIN")
-                .antMatchers("/author/delete/**").hasRole("ADMIN")
+                .antMatchers("/register/**").permitAll()
+
+                .antMatchers(HttpMethod.GET, "/user/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/user/**").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/book/**").permitAll()
+                .antMatchers("/book/**").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/category/**").permitAll()
+                .antMatchers("/category/**").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.GET, "/author/**").permitAll()
+                .antMatchers("/author/**").hasRole("ADMIN")
+
+                .antMatchers("/address/**").hasRole("ADMIN")
+                .antMatchers("/cart/**").hasRole("ADMIN")
+                .antMatchers("/history/**").hasRole("ADMIN")
+                .antMatchers("/order/**").hasRole( "ADMIN")
                 .anyRequest().permitAll()
                 .and().exceptionHandling()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

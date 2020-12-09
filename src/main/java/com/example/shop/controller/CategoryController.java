@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.dto.CategoryDTO;
 import com.example.shop.entity.CategoryEntity;
 import com.example.shop.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class CategoryController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CategoryEntity> createCategory(@RequestBody CategoryEntity categoryEntity, Principal principal) {
+    public ResponseEntity<CategoryEntity> createCategory(@RequestBody CategoryDTO categoryEntity, Principal principal) {
         return new ResponseEntity<>(categoryService.createCategory(categoryEntity, principal.getName()), HttpStatus.OK);
     }
 
@@ -31,9 +32,10 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<CategoryEntity> updateById(@RequestBody CategoryEntity categoryEntity, Principal principal) throws Exception{
-        return new ResponseEntity<>(categoryService.update(categoryEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<CategoryEntity> updateById(@PathVariable Integer id,
+            @RequestBody CategoryDTO categoryEntity, Principal principal) throws Exception{
+        return new ResponseEntity<>(categoryService.update(id, categoryEntity, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -20,28 +20,14 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
-    @GetMapping("/getAll")
-    public ResponseEntity<List<CartEntity>> getAll() {
-        return new ResponseEntity<>(cartService.getAll(), HttpStatus.OK);
+    @GetMapping
+    public ResponseEntity<CartEntity> getCart(Principal principal) throws Exception {
+        return new ResponseEntity<>(cartService.findByEmail(principal.getName()), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<CartEntity> addCart(@RequestBody CartDTO cartEntity, Principal principal) throws Exception {
-        return new ResponseEntity<>(cartService.createCart(cartEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update")
+    public ResponseEntity<CartEntity> addBooks(@RequestBody CartDTO cartDTO, Principal principal) throws Exception{
+        return new ResponseEntity<>(cartService.update(cartDTO, principal.getName()), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CartEntity> getCart(@PathVariable Integer id) throws Exception {
-        return new ResponseEntity<>(cartService.findById(id), HttpStatus.OK);
-    }
-
-    @PutMapping("/update/{id}")
-    public ResponseEntity<CartEntity> updateCart(@PathVariable Integer id, @RequestBody CartDTO cartEntity, Principal principal) throws Exception{
-        return new ResponseEntity<>(cartService.update(id, cartEntity, principal.getName()), HttpStatus.OK);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteCart(@PathVariable Integer id, Principal principal) {
-        return new ResponseEntity<>(cartService.deleteById(id, principal.getName()), HttpStatus.OK);
-    }
 }

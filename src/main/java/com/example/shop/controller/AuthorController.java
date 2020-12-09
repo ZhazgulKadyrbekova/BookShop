@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.dto.AuthorDTO;
 import com.example.shop.entity.AuthorEntity;
 import com.example.shop.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AuthorController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<AuthorEntity> addAuthor(@RequestBody AuthorEntity authorEntity, Principal principal) {
+    public ResponseEntity<AuthorEntity> addAuthor(@RequestBody AuthorDTO authorEntity, Principal principal) {
         return new ResponseEntity<>(authorService.createAuthor(authorEntity, principal.getName()), HttpStatus.OK);
     }
 
@@ -31,9 +32,10 @@ public class AuthorController {
         return new ResponseEntity<>(authorService.findById(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<AuthorEntity> updateAuthor(@RequestBody AuthorEntity authorEntity, Principal principal) throws Exception {
-        return new ResponseEntity<>(authorService.update(authorEntity, principal.getName()), HttpStatus.OK);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<AuthorEntity> updateAuthor(@PathVariable Integer id,
+            @RequestBody AuthorDTO authorEntity, Principal principal) {
+        return new ResponseEntity<>(authorService.update(id, authorEntity, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

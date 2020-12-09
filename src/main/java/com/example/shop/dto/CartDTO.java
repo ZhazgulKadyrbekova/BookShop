@@ -12,7 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 
 public class CartDTO {
-    private Integer user;
     private List<Integer> books;
-    private BigDecimal totalPrice;
 }

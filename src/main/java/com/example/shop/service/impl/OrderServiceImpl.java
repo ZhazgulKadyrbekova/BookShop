@@ -11,6 +11,7 @@ import com.example.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,16 +39,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity createOrder(OrderDTO order, String email) throws Exception{
+    public List<OrderEntity> findAllByEmail(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        return orderRepository.findAllByUser(userEntity);
+    }
+
+    @Override
+    public OrderEntity createOrder(OrderDTO order, String email) {
         OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setAddress(addressRepository.findById(order.getAddress()).orElseThrow(Exception::new));
-        orderEntity.setUser(userRepository.findById(order.getUser()).orElseThrow(Exception::new));
+        orderEntity.setAddress(addressRepository.findById(order.getAddress())
+                .orElseThrow(() -> new AddressNotFoundException("Address id " + order.getAddress() + " not found")));
+        orderEntity.setUser(userRepository.findByEmail(email));
         List<BookEntity> books = new ArrayList<>();
+        BigDecimal totalPrice = BigDecimal.ZERO;
         for (Integer item : order.getBooks()) {
-            books.add(bookRepository.findById(item).orElseThrow(Exception::new));
+            BookEntity book = bookRepository.findById(item)
+                    .orElseThrow(() -> new BookNotFoundException("Book id " + item + " not found"));
+            totalPrice.add(book.getPrice());
+            books.add(book);
         }
         orderEntity.setBooks(books);
-        orderEntity.setTotalPrice(order.getTotalPrice());
+        orderEntity.setTotalPrice(totalPrice);
         orderEntity.setDate(LocalDate.now());
 
         orderRepository.save(orderEntity);
@@ -71,6 +83,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderEntity update(Integer id, OrderDTO orderDTO, String email) {
+        UserEntity user = userRepository.findByEmail(email);
+
         OrderEntity order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order id " + id + " not found!"));
         if (order.isDeleted())
@@ -78,19 +92,20 @@ public class OrderServiceImpl implements OrderService {
 
         order.setAddress(addressRepository.findById(orderDTO.getAddress())
                 .orElseThrow(() -> new AddressNotFoundException("Order id " + orderDTO.getAddress() + " not found!")));
-        order.setUser(userRepository.findById(orderDTO.getUser())
-                .orElseThrow(() -> new UserNotFoundException("Order id " + orderDTO.getUser() + " not found!")));
+        order.setUser(user);
         List<BookEntity> books = new ArrayList<>();
+        BigDecimal totalPrice = BigDecimal.ZERO;
         for (Integer item : orderDTO.getBooks()) {
-            books.add(bookRepository.findById(item)
-                    .orElseThrow(() -> new BookNotFoundException("Order id " + item + " not found!")));
+            BookEntity book = bookRepository.findById(item)
+                    .orElseThrow(() -> new BookNotFoundException("Book id " + item + " not found"));
+            totalPrice.add(book.getPrice());
+            books.add(book);
         }
         order.setBooks(books);
-        order.setTotalPrice(order.getTotalPrice());
+        order.setTotalPrice(totalPrice);
 
         orderRepository.save(order);
 
-        UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ORDER", "UPDATE", user);
         historyRepository.save(history);

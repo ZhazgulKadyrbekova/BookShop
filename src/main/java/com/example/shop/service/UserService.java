@@ -18,4 +18,6 @@ public interface UserService {
     List<UserEntity> getAllByName(String name);
     UserEntity getByEmail(String email);
     String blockUser(Integer id, String email);
+    String unblockUser(Integer id, String email);
+
 }

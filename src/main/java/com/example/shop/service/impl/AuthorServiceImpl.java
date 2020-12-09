@@ -1,5 +1,6 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.dto.AuthorDTO;
 import com.example.shop.entity.AuthorEntity;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.UserEntity;
@@ -29,7 +30,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorEntity createAuthor(AuthorEntity author, String email) {
+    public AuthorEntity createAuthor(AuthorDTO author, String email) {
 
         AuthorEntity authorEntity = new AuthorEntity();
         authorEntity.setName(author.getName());
@@ -54,11 +55,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorEntity update(AuthorEntity author, String email) {
-        AuthorEntity authorEntity = authorRepository.findById(author.getID())
-                .orElseThrow(() -> new AuthorNotFoundException("Author id " + author.getID() + " not found!"));
-        if (author.isDeleted()) {
-            throw new AuthorNotFoundException("Author id " + author.getID() + " not found!");
+    public AuthorEntity update(Integer id, AuthorDTO author, String email) {
+        AuthorEntity authorEntity = authorRepository.findById(id)
+                .orElseThrow(() -> new AuthorNotFoundException("Author id " + id + " not found!"));
+        if (authorEntity.isDeleted()) {
+            throw new AuthorNotFoundException("Author id " + id + " not found!");
         }
         authorEntity.setName(author.getName());
         authorRepository.save(authorEntity);

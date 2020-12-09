@@ -1,5 +1,6 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.dto.CategoryDTO;
 import com.example.shop.entity.CategoryEntity;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.UserEntity;
@@ -8,6 +9,7 @@ import com.example.shop.repository.CategoryRepository;
 import com.example.shop.repository.HistoryRepository;
 import com.example.shop.repository.UserRepository;
 import com.example.shop.service.CategoryService;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryEntity createCategory(CategoryEntity categoryEntity, String email) {
+    public CategoryEntity createCategory(CategoryDTO categoryEntity, String email) {
         CategoryEntity category = new CategoryEntity();
         category.setName(categoryEntity.getName());
         categoryRepository.save(category);
@@ -48,11 +50,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryEntity update(CategoryEntity categoryEntity, String email) {
-        CategoryEntity category = categoryRepository.findById(categoryEntity.getID())
-                .orElseThrow(() -> new CategoryNotFoundException("Category id " + categoryEntity.getID() + " not found!"));
+    public CategoryEntity update(Integer id, CategoryDTO categoryEntity, String email) {
+        CategoryEntity category = categoryRepository.findById(id)
+                .orElseThrow(() -> new CategoryNotFoundException("Category id " + id + " not found!"));
         if (category.isDeleted()) {
-            throw new CategoryNotFoundException("Category id " + categoryEntity.getID() + " not found!");
+            throw new CategoryNotFoundException("Category id " + id + " not found!");
         }
         category.setName(categoryEntity.getName());
         categoryRepository.save(category);

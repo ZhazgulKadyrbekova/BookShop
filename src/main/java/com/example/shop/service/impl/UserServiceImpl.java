@@ -2,13 +2,16 @@ package com.example.shop.service.impl;
 
 import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.entity.CartEntity;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.RoleEntity;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.exception.UserNotFoundException;
+import com.example.shop.repository.CartRepository;
 import com.example.shop.repository.HistoryRepository;
 import com.example.shop.repository.RoleRepository;
 import com.example.shop.repository.UserRepository;
+import com.example.shop.service.CartService;
 import com.example.shop.service.MailService;
 import com.example.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,8 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private HistoryRepository historyRepository;
+    @Autowired
+    private CartRepository cartRepository;
 
     @Override
     public String createUser(UserDTO userDTO) {
@@ -105,7 +110,13 @@ public class UserServiceImpl implements UserService {
         }
         user.setActivationCode(null);
         user.setDeleted(false);
+
+        CartEntity cart = new CartEntity();
+        cart.setUser(user);
+        cartRepository.save(cart);
+
         userRepository.save(user);
+
         return "Your account has been activated";
     }
 
@@ -156,14 +167,41 @@ public class UserServiceImpl implements UserService {
         if (user.isDeleted()) {
             throw new UserNotFoundException("User id " + id + " not found!");
         }
+
+        CartEntity cart = cartRepository.findByUser(user);
+        cart.setDeleted(true);
+        cartRepository.save(cart);
+
         user.setDeleted(true);
         userRepository.save(user);
 
         UserEntity userEntity = userRepository.findByEmail(email);
         HistoryEntity history = new
-                HistoryEntity("USER", "BLOCK " + user.getName(), userEntity);
+                HistoryEntity("USER", "BLOCK " + user.getEmail(), userEntity);
         historyRepository.save(history);
 
         return "User id " + id + " has been blocked";
+    }
+
+    @Override
+    public String unblockUser(Integer id, String email) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User id " + id + " not found"));
+        if (!user.isDeleted())
+            return "User id " + id + " is not blocked";
+
+        CartEntity cartEntity = cartRepository.findByUser(user);
+        cartEntity.setDeleted(false);
+        cartRepository.save(cartEntity);
+
+        user.setDeleted(false);
+        userRepository.save(user);
+
+        UserEntity userEntity = userRepository.findByEmail(email);
+        HistoryEntity history = new
+                HistoryEntity("USER", "UNBLOCK" + user.getEmail(), userEntity);
+        historyRepository.save(history);
+
+        return "User id " + id + " has been unblocked";
     }
 }

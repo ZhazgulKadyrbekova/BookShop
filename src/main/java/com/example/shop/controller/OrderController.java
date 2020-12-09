@@ -32,12 +32,17 @@ public class OrderController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderEntity> getOrder(@PathVariable Integer id) throws Exception {
+    public ResponseEntity<OrderEntity> getOrder(@PathVariable Integer id) {
         return new ResponseEntity<>(orderService.findById(id), HttpStatus.OK);
     }
 
+    @GetMapping
+    public ResponseEntity<List<OrderEntity>> getByEmail(Principal principal) {
+        return new ResponseEntity<>(orderService.findAllByEmail(principal.getName()), HttpStatus.OK);
+    }
+
     @PutMapping("/update/{id}")
-    public ResponseEntity<OrderEntity> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderEntity, Principal principal) throws Exception{
+    public ResponseEntity<OrderEntity> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderEntity, Principal principal) {
         return new ResponseEntity<>(orderService.update(id, orderEntity, principal.getName()), HttpStatus.OK);
     }
 

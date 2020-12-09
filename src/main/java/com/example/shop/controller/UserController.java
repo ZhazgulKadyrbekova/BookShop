@@ -31,6 +31,11 @@ public class UserController {
         return new ResponseEntity<>(userService.blockUser(id, principal.getName()), HttpStatus.OK);
     }
 
+    @PutMapping("/unblock/{id}")
+    public ResponseEntity<String> unblockUser(@PathVariable("id") Integer id, Principal principal) {
+        return new ResponseEntity<>(userService.unblockUser(id, principal.getName()), HttpStatus.OK);
+    }
+
     @GetMapping("/email/{email}")
     public ResponseEntity<UserEntity> getByEmail(@PathVariable("email") String mail) throws Exception {
         return new ResponseEntity<>(userService.getByEmail(mail), HttpStatus.OK);

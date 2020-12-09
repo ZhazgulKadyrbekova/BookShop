@@ -31,5 +31,4 @@ public class UserEntity extends Base{
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private RoleEntity role;
 
-
 }
