@@ -1,7 +1,7 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
-import com.example.shop.dto.UserRegisterDTO;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.RoleEntity;
 import com.example.shop.entity.UserEntity;
@@ -32,68 +32,94 @@ public class UserServiceImpl implements UserService {
     private HistoryRepository historyRepository;
 
     @Override
-    public boolean save(UserRegisterDTO userRegisterDTO) {
-        UserEntity user = userRepository.findByEmail(userRegisterDTO.getEmail());
-        if (user != null) {
-            user.setPassword(encoder.encode(userRegisterDTO.getPassword()));
-            user.setName(userRegisterDTO.getName());
-            userRepository.save(user);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean createUser(UserDTO userDTO) {
+    public String createUser(UserDTO userDTO) {
         UserEntity user = new UserEntity();
+
         user.setEmail(userDTO.getEmail());
+        user.setName(userDTO.getName());
+        if (!userDTO.getPassword().equals(userDTO.getPassword2())) {
+            throw new RuntimeException("Passwords are not same");
+        }
+        user.setPassword(encoder.encode(userDTO.getPassword()));
         user.setDeleted(true);
         user.setActivationCode(UUID.randomUUID().toString());
 
-        RoleEntity role = roleRepository.save(new RoleEntity("ROLE_USER"));
+        RoleEntity role = roleRepository.findByNameContaining("ROLE_USER");
+        if (role == null)
+            role = roleRepository.save(new RoleEntity("ROLE_USER"));
         user.setRole(role);
 
         String message = "Link to activate your account: '/register/activate/" +
                 user.getActivationCode();
         if (mailService.send(user.getEmail(), "activation code", message)) {
             userRepository.save(user);
-//
-//            UserEntity userEntity = userRepository.findByEmail(email);
-//            HistoryEntity history = new
-//                    HistoryEntity("USER", "CREATE id:" + user.getID().toString(), userEntity);
-//            historyRepository.save(history);
 
-            return true;
+            return "Activation code has been send to your email";
         }
-        return false;
+        return "Something went wrong";
     }
 
     @Override
-    public void createAdmin(UserEntity user) {
+    public String createAdmin(UserAdminDTO userAdminDTO) {
+        UserEntity user = new UserEntity();
+
+        user.setEmail(userAdminDTO.getEmail());
+
+        user.setDeleted(true);
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        String message = "Link to activate your account: '/register/activate/" +
+                user.getActivationCode();
+        if (mailService.send(user.getEmail(), "activation code", message)) {
+            userRepository.save(user);
+
+            return "Activation code has been send to your email";
+        }
+        return "Something went wrong";
+    }
+
+    @Override
+    public String saveAdmin(UserDTO userDTO) {
+        UserEntity user = userRepository.findByEmail(userDTO.getEmail());
+        if (user == null)
+            throw new UserNotFoundException("User " + userDTO.getEmail() + " not found");
+        user.setEmail(userDTO.getEmail());
+        user.setName(userDTO.getName());
+        if (!userDTO.getPassword().equals(userDTO.getPassword2()))
+            throw new RuntimeException("Passwords are not same");
+        user.setPassword(encoder.encode(userDTO.getPassword()));
+
+        RoleEntity roleEntity = roleRepository.findByNameContaining("ROLE_ADMIN");
+        if (roleEntity == null)
+            roleEntity = roleRepository.save(new RoleEntity("ROLE_ADMIN"));
+        user.setRole(roleEntity);
         userRepository.save(user);
+        return "Account info has been saved";
     }
 
     @Override
     public String activateUser(String code) {
         UserEntity user = userRepository.findByActivationCode(code);
         if (user == null) {
-            return "error";
+            return "Invalid activation code";
         }
         user.setActivationCode(null);
         user.setDeleted(false);
         userRepository.save(user);
-        return user.getEmail();
+        return "Your account has been activated";
     }
 
     @Override
-    public boolean sendForgottenPassword(String email) {
+    public String sendForgottenPassword(String email) {
         UserEntity user = userRepository.findByEmail(email);
         String message = "Link to reset forgotten password: '/register/changePassword";
-        return user != null && mailService.send(user.getEmail(), "reset password", message);
+        if (user != null && mailService.send(user.getEmail(), "reset password", message))
+            return "Recovery code sent to your email";
+        else return "Something went wrong";
     }
 
     @Override
-    public boolean changePassword(String email, String password) {
+    public String changePassword(String email, String password) {
         UserEntity user = userRepository.findByEmail(email);
         if (user != null) {
             user.setPassword(encoder.encode(password));
@@ -103,9 +129,9 @@ public class UserServiceImpl implements UserService {
                     HistoryEntity("USER", "CHANGE PASSWORD " + user.getEmail(), user);
             historyRepository.save(history);
 
-            return true;
+            return "You have successfully changed your password";
         }
-        return false;
+        return "Something went wrong";
     }
 
     @Override
@@ -138,6 +164,6 @@ public class UserServiceImpl implements UserService {
                 HistoryEntity("USER", "BLOCK " + user.getName(), userEntity);
         historyRepository.save(history);
 
-        return "User id " + id + " has been deleted";
+        return "User id " + id + " has been blocked";
     }
 }

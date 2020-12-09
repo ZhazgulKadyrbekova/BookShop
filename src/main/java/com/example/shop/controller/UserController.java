@@ -26,7 +26,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/block/{id}")
     public ResponseEntity<String> blockUser(@PathVariable("id") Integer id, Principal principal) {
         return new ResponseEntity<>(userService.blockUser(id, principal.getName()), HttpStatus.OK);
     }

@@ -31,13 +31,14 @@ public class CategoryServiceImpl implements CategoryService {
     public CategoryEntity createCategory(CategoryEntity categoryEntity, String email) {
         CategoryEntity category = new CategoryEntity();
         category.setName(categoryEntity.getName());
+        categoryRepository.save(category);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("CATEGORY", "CREATE " + category.getName(), user);
         historyRepository.save(history);
 
-        return categoryRepository.save(category);
+        return category;
     }
 
     @Override
@@ -54,13 +55,14 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException("Category id " + categoryEntity.getID() + " not found!");
         }
         category.setName(categoryEntity.getName());
+        categoryRepository.save(category);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("CATEGORY", "UPDATE " + categoryEntity.getName(), user);
         historyRepository.save(history);
 
-        return categoryRepository.save(category);
+        return category;
     }
 
     @Override
@@ -71,6 +73,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CategoryNotFoundException("Category id " + id + " not found!");
         }
         category.setDeleted(true);
+        categoryRepository.save(category);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new

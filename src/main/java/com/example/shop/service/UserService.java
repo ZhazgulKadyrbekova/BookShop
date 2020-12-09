@@ -1,18 +1,18 @@
 package com.example.shop.service;
 
+import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
-import com.example.shop.dto.UserRegisterDTO;
 import com.example.shop.entity.UserEntity;
 
 import java.util.List;
 
 public interface UserService {
-    boolean save(UserRegisterDTO userRegisterDTO);
-    boolean createUser(UserDTO userDTO);
-    void createAdmin(UserEntity user);
+    String createUser(UserDTO userDTO);
+    String createAdmin(UserAdminDTO user);
+    String saveAdmin(UserDTO userDTO);
     String activateUser(String code);
-    boolean sendForgottenPassword(String email);
-    boolean changePassword(String email, String password);
+    String sendForgottenPassword(String email);
+    String changePassword(String email, String password);
 
     List<UserEntity> getAll();
     List<UserEntity> getAllByName(String name);

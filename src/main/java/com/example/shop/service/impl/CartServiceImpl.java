@@ -48,13 +48,14 @@ public class CartServiceImpl implements CartService {
             books.add(bookRepository.findById(item).orElseThrow(Exception::new));
         }
         cart.setBooks(books);
+        cartRepository.save(cart);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("CART", "CREATE", user);
         historyRepository.save(history);
 
-        return cartRepository.save(cart);
+        return cart;
     }
 
     @Override
@@ -82,13 +83,14 @@ public class CartServiceImpl implements CartService {
                     .orElseThrow(() -> new BookNotFoundException("Book id " + item + " not found!")));
         }
         cart.setBooks(books);
+        cartRepository.save(cart);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("CART", "UPDATE", user);
         historyRepository.save(history);
 
-        return cartRepository.save(cart);
+        return cart;
     }
 
     @Override
@@ -99,6 +101,7 @@ public class CartServiceImpl implements CartService {
             throw new CartNotFoundException("Cart id " + id + " not found!");
 
         cart.setDeleted(true);
+        cartRepository.save(cart);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new

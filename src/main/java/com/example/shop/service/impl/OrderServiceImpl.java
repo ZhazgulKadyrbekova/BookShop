@@ -50,12 +50,14 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.setTotalPrice(order.getTotalPrice());
         orderEntity.setDate(LocalDate.now());
 
+        orderRepository.save(orderEntity);
+
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ORDER", "CREATE", user);
         historyRepository.save(history);
 
-        return orderRepository.save(orderEntity);
+        return orderEntity;
     }
 
     @Override
@@ -86,12 +88,14 @@ public class OrderServiceImpl implements OrderService {
         order.setBooks(books);
         order.setTotalPrice(order.getTotalPrice());
 
+        orderRepository.save(order);
+
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ORDER", "UPDATE", user);
         historyRepository.save(history);
 
-        return orderRepository.save(order);
+        return order;
     }
 
     @Override

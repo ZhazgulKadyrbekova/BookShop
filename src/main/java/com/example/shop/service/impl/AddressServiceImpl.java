@@ -30,18 +30,19 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressEntity createAddress(AddressEntity address, String email) {
         AddressEntity addressEntity = new AddressEntity();
-        addressEntity.setCity(addressEntity.getCity());
-        addressEntity.setDistrict(addressEntity.getDistrict());
-        addressEntity.setStreet(addressEntity.getStreet());
-        addressEntity.setHouse(addressEntity.getHouse());
-        addressEntity.setApartment(addressEntity.getApartment());
+        addressEntity.setCity(address.getCity());
+        addressEntity.setDistrict(address.getDistrict());
+        addressEntity.setStreet(address.getStreet());
+        addressEntity.setHouse(address.getHouse());
+        addressEntity.setApartment(address.getApartment());
+        addressRepository.save(addressEntity);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ADDRESS", "CREATE ", user);
         historyRepository.save(history);
 
-        return addressRepository.save(addressEntity);
+        return addressEntity;
     }
 
     @Override
@@ -67,13 +68,14 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setHouse(address.getHouse());
         addressEntity.setApartment(address.getApartment());
         addressEntity.setDeleted(address.isDeleted());
+        addressRepository.save(addressEntity);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ADDRESS", "UPDATE", user);
         historyRepository.save(history);
 
-        return addressRepository.save(addressEntity);
+        return addressEntity;
     }
 
     @Override

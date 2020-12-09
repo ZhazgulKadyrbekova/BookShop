@@ -61,12 +61,14 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new CategoryNotFoundException("Category id " + book.getCategory() + " not found!")));
         newBook.setDeleted(false);
 
+        bookRepository.save(newBook);
+
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("BOOK", "CREATE " + book.getName(), user);
         historyRepository.save(history);
 
-        return bookRepository.save(newBook);
+        return newBook;
     }
 
     @Override
@@ -96,12 +98,13 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new CategoryNotFoundException("Category id " + bookDTO.getCategory() + " not found!")));
         book.setDeleted(false);
 
+        bookRepository.save(book);
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("BOOK", "UPDATE " + book.getName(), user);
         historyRepository.save(history);
 
-        return bookRepository.save(book);
+        return book;
     }
 
     @Override
@@ -128,12 +131,14 @@ public class BookServiceImpl implements BookService {
 
             book.setImage(image);
 
+            bookRepository.save(book);
+
             UserEntity user = userRepository.findByEmail(email);
             HistoryEntity history = new
                     HistoryEntity("BOOK", "SET IMAGE " + book.getName(), user);
             historyRepository.save(history);
 
-            return bookRepository.save(book);
+            return book;
 
         } catch (IOException e) {
             throw new IOException("Unable to set an image to book");

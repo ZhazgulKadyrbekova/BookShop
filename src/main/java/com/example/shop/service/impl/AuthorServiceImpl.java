@@ -33,13 +33,14 @@ public class AuthorServiceImpl implements AuthorService {
 
         AuthorEntity authorEntity = new AuthorEntity();
         authorEntity.setName(author.getName());
+        authorRepository.save(authorEntity);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("AUTHOR", "CREATE " + authorEntity.getName(), user);
         historyRepository.save(history);
 
-        return authorRepository.save(authorEntity);
+        return authorEntity;
     }
 
     @Override
@@ -60,13 +61,14 @@ public class AuthorServiceImpl implements AuthorService {
             throw new AuthorNotFoundException("Author id " + author.getID() + " not found!");
         }
         authorEntity.setName(author.getName());
+        authorRepository.save(authorEntity);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("AUTHOR", "UPDATE " + author.getName(), user);
         historyRepository.save(history);
 
-        return  authorRepository.save(authorEntity);
+        return  authorEntity;
     }
 
     @Override
@@ -77,6 +79,7 @@ public class AuthorServiceImpl implements AuthorService {
             throw new AuthorNotFoundException("Author id " + id + " not found!");
         }
         author.setDeleted(true);
+        authorRepository.save(author);
 
         UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
