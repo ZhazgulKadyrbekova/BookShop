@@ -19,5 +19,5 @@ public interface UserService {
     UserEntity getByEmail(String email);
     String blockUser(Integer id, String email);
     String unblockUser(Integer id, String email);
-
+    void createSuperAdmin(UserEntity user);
 }

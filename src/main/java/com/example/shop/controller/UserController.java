@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.dto.UserAuthDTO;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.service.UserService;
 import org.apache.catalina.User;
@@ -26,6 +27,11 @@ public class UserController {
         return new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/profile")
+    public ResponseEntity<UserEntity> getProfile(Principal principal) {
+        return new ResponseEntity<>(userService.getByEmail(principal.getName()), HttpStatus.OK);
+    }
+
     @DeleteMapping("/block/{id}")
     public ResponseEntity<String> blockUser(@PathVariable("id") Integer id, Principal principal) {
         return new ResponseEntity<>(userService.blockUser(id, principal.getName()), HttpStatus.OK);
@@ -37,7 +43,7 @@ public class UserController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserEntity> getByEmail(@PathVariable("email") String mail) throws Exception {
+    public ResponseEntity<UserEntity> getByEmail(@PathVariable("email") String mail) {
         return new ResponseEntity<>(userService.getByEmail(mail), HttpStatus.OK);
     }
 
@@ -50,5 +56,10 @@ public class UserController {
             user.retainAll(userService.getAllByName(name));
 
         return new ResponseEntity<>(new ArrayList<>(user), HttpStatus.OK);
+    }
+
+    @PutMapping("/changePassword")
+    public String changePassword(@RequestBody UserAuthDTO userAuthDTO) {
+        return userService.changePassword(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
 }

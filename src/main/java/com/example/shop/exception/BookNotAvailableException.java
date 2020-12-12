@@ -3,9 +3,9 @@ package com.example.shop.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
-public class HistoryNotFoundException extends RuntimeException {
-    public HistoryNotFoundException(String message) {
+@ResponseStatus(HttpStatus.BAD_REQUEST)
+public class BookNotAvailableException extends RuntimeException{
+    public BookNotAvailableException(String message) {
         super(message);
     }
 }

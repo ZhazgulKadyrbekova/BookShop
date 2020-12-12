@@ -2,10 +2,7 @@ package com.example.shop.service.impl;
 
 import com.example.shop.dto.OrderDTO;
 import com.example.shop.entity.*;
-import com.example.shop.exception.AddressNotFoundException;
-import com.example.shop.exception.BookNotFoundException;
-import com.example.shop.exception.OrderNotFoundException;
-import com.example.shop.exception.UserNotFoundException;
+import com.example.shop.exception.*;
 import com.example.shop.repository.*;
 import com.example.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +52,15 @@ public class OrderServiceImpl implements OrderService {
         for (Integer item : order.getBooks()) {
             BookEntity book = bookRepository.findById(item)
                     .orElseThrow(() -> new BookNotFoundException("Book id " + item + " not found"));
+
+            if (book.getQuantity() - 1 < 0)
+                throw new BookNotAvailableException("Book id " + item + " is not available now");
+            book.setQuantity(book.getQuantity()-1);
+            bookRepository.save(book);
+
             totalPrice.add(book.getPrice());
             books.add(book);
+
         }
         orderEntity.setBooks(books);
         orderEntity.setTotalPrice(totalPrice);
@@ -95,11 +99,22 @@ public class OrderServiceImpl implements OrderService {
         order.setUser(user);
         List<BookEntity> books = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.ZERO;
+
         for (Integer item : orderDTO.getBooks()) {
             BookEntity book = bookRepository.findById(item)
                     .orElseThrow(() -> new BookNotFoundException("Book id " + item + " not found"));
+
+            if (book.getQuantity() - 1 < 0)
+                throw new BookNotAvailableException("Book id " + item + " is not available now");
+            book.setQuantity(book.getQuantity()-1);
+            bookRepository.save(book);
+
             totalPrice.add(book.getPrice());
             books.add(book);
+        }
+        for (BookEntity book : order.getBooks()) {
+            book.setQuantity(book.getQuantity() + 1);
+            bookRepository.save(book);
         }
         order.setBooks(books);
         order.setTotalPrice(totalPrice);

@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class Init implements CommandLineRunner {
 //    @Autowired
@@ -20,11 +17,11 @@ public class Init implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        RoleEntity role = new RoleEntity("ROLE_ADMIN");
-//        roleRepository.save(role);
-//        List<RoleEntity> roles = new ArrayList<>();
-//        roles.add(role);
+//        RoleEntity role = roleRepository.findByNameContaining("ROLE_SUPER_ADMIN");
+//        if (role == null)
+//            role = roleRepository.save(new RoleEntity("ROLE_SUPER_ADMIN"));
 //
-//        userService.createAdmin(new UserEntity(false, "***REMOVED***@gmail.com", "Zhazgul", "12345678", null, null, true, roles));
+//        userService.createSuperAdmin(new
+//                UserEntity("zhazgul@gmail.com", "Zhazgul", "123456", null, role));
     }
 }

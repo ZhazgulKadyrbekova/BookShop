@@ -204,4 +204,10 @@ public class UserServiceImpl implements UserService {
 
         return "User id " + id + " has been unblocked";
     }
+
+    @Override
+    public void createSuperAdmin(UserEntity user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
 }

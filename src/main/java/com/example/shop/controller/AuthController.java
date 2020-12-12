@@ -42,19 +42,9 @@ public class AuthController {
         return userService.activateUser(code);
     }
 
-    @PutMapping("/changePassword")
-    public String changePassword(@RequestBody UserAuthDTO userAuthDTO) {
-        return userService.changePassword(userAuthDTO.getEmail(), userAuthDTO.getPassword());
-    }
-
     @PostMapping("/forgotPassword/{email}")
-    public String sendForgottenPassword(@PathVariable("email") String email, Principal principal) {
+    public String sendForgottenPassword(@PathVariable("email") String email) {
         return userService.sendForgottenPassword(email);
-    }
-
-    @GetMapping("/hello")
-    public String sayHello(Principal principal) {
-        return "Hello, " + principal.getName();
     }
 
     @PostMapping("/auth")
