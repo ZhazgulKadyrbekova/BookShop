@@ -31,4 +31,7 @@ public class UserEntity extends Base{
     @JoinColumn(name = "role_id", referencedColumnName = "id")
     private RoleEntity role;
 
+    @ManyToOne
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private ImageEntity image;
 }

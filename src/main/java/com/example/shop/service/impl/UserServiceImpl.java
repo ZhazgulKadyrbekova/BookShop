@@ -1,24 +1,24 @@
 package com.example.shop.service.impl;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
-import com.example.shop.entity.CartEntity;
-import com.example.shop.entity.HistoryEntity;
-import com.example.shop.entity.RoleEntity;
-import com.example.shop.entity.UserEntity;
+import com.example.shop.entity.*;
 import com.example.shop.exception.UserNotFoundException;
-import com.example.shop.repository.CartRepository;
-import com.example.shop.repository.HistoryRepository;
-import com.example.shop.repository.RoleRepository;
-import com.example.shop.repository.UserRepository;
-import com.example.shop.service.CartService;
+import com.example.shop.repository.*;
 import com.example.shop.service.MailService;
 import com.example.shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -35,6 +35,8 @@ public class UserServiceImpl implements UserService {
     private HistoryRepository historyRepository;
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private ImageRepository imageRepository;
 
     @Override
     public String createUser(UserDTO userDTO) {
@@ -209,5 +211,37 @@ public class UserServiceImpl implements UserService {
     public void createSuperAdmin(UserEntity user) {
         user.setPassword(encoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    @Override
+    public UserEntity setImage(MultipartFile multipartFile, String email) throws IOException {
+        final String urlKey = "clo";
+
+        ImageEntity image = new ImageEntity();
+        File file;
+        try {
+            UserEntity user = userRepository.findByEmail(email);
+
+            file = Files.createTempFile(System.currentTimeMillis() + "",
+                    multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().length() - 4))
+                    .toFile();
+            multipartFile.transferTo(file);
+
+            Cloudinary cloudinary = new Cloudinary(urlKey);
+            Map uploadResult = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
+            image.setName((String) uploadResult.get("public_id"));
+            image.setUrl((String) uploadResult.get("url"));
+            image.setFormat((String) uploadResult.get("format"));
+            imageRepository.save(image);
+
+            user.setImage(image);
+
+            userRepository.save(user);
+            return user;
+
+        } catch (IOException e) {
+            throw new IOException("Unable to set an image to profile");
+        }
+
     }
 }

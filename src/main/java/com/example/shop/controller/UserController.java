@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
@@ -62,4 +64,10 @@ public class UserController {
     public String changePassword(@RequestBody UserAuthDTO userAuthDTO) {
         return userService.changePassword(userAuthDTO.getEmail(), userAuthDTO.getPassword());
     }
+
+    @PutMapping("/setImage")
+    public ResponseEntity<UserEntity> setImage(@RequestParam MultipartFile multipartFile, Principal principal) throws IOException {
+        return new ResponseEntity<>(userService.setImage(multipartFile, principal.getName()), HttpStatus.OK);
+    }
+
 }
