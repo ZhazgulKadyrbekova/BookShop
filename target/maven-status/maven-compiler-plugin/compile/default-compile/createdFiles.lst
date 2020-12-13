@@ -44,7 +44,6 @@ com/example/shop/repository/HistoryRepository.class
 com/example/shop/entity/OrderEntity.class
 com/example/shop/service/AddressService.class
 com/example/shop/controller/AddressController.class
-com/example/shop/exception/CustomExceptionHandler.class
 com/example/shop/service/impl/HistoryServiceImpl.class
 com/example/shop/service/CategoryService.class
 com/example/shop/config/SecurityConfig.class
@@ -56,7 +55,6 @@ com/example/shop/controller/OrderController.class
 com/example/shop/entity/CategoryEntity.class
 com/example/shop/service/impl/OrderServiceImpl.class
 com/example/shop/exception/CategoryNotFoundException.class
-com/example/shop/dto/UserRegisterDTO.class
 com/example/shop/exception/AuthorNotFoundException.class
 com/example/shop/service/impl/CartServiceImpl.class
 com/example/shop/entity/RoleEntity.class

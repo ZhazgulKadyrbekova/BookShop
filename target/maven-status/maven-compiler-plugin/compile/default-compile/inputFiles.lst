@@ -1,5 +1,6 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/controller/BookController.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/AuthorService.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/repository/ImageRepository.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/controller/HistoryController.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/UserNotFoundException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/controller/AuthController.java
@@ -8,7 +9,7 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/controller/AddressController.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/repository/BookRepository.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/OrderNotFoundException.java
-/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/UserRegisterDTO.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/BookNotAvailableException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/impl/CategoryServiceImpl.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/AuthorNotFoundException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/impl/HistoryServiceImpl.java
@@ -26,6 +27,7 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/UserAdminDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/repository/AuthorRepository.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/config/Swagger.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/CategoryDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/repository/RoleRepository.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/boot/Init.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/UserEntity.java
@@ -34,9 +36,11 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/repository/OrderRepository.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/Base.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/impl/UserServiceImpl.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/AddressDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/AddressEntity.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/UserAuthDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/BookNotFoundException.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/AuthorDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/controller/OrderController.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/AddressNotFoundException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/util/JwtUtil.java
@@ -49,7 +53,6 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/AddressService.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/BookEntity.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/MyUserDetailsService.java
-/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/CustomExceptionHandler.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/AuthorEntity.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/HistoryNotFoundException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/BookService.java
@@ -58,6 +61,7 @@
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/impl/BookServiceImpl.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/impl/AuthorServiceImpl.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/service/UserService.java
+/home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/entity/ImageEntity.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/exception/CategoryNotFoundException.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/dto/UserDTO.java
 /home/zhazgul/Desktop/unnamed/Shop/src/main/java/com/example/shop/config/SecurityConfig.java

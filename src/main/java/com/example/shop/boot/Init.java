@@ -22,6 +22,6 @@ public class Init implements CommandLineRunner {
 //            role = roleRepository.save(new RoleEntity("ROLE_SUPER_ADMIN"));
 //
 //        userService.createSuperAdmin(new
-//                UserEntity("zhazgul@gmail.com", "Zhazgul", "123456", null, role));
+//                UserEntity("zhazgul.j@gmail.com", "AAA", "123456", null, role, null));
     }
 }
