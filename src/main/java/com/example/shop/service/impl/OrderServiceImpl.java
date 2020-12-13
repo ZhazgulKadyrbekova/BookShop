@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,13 +57,12 @@ public class OrderServiceImpl implements OrderService {
             book.setQuantity(book.getQuantity()-1);
             bookRepository.save(book);
 
-            totalPrice.add(book.getPrice());
+            totalPrice = totalPrice.add(book.getPrice());
             books.add(book);
 
         }
         orderEntity.setBooks(books);
         orderEntity.setTotalPrice(totalPrice);
-        orderEntity.setDate(LocalDate.now());
 
         orderRepository.save(orderEntity);
 
@@ -109,7 +107,7 @@ public class OrderServiceImpl implements OrderService {
             book.setQuantity(book.getQuantity()-1);
             bookRepository.save(book);
 
-            totalPrice.add(book.getPrice());
+            totalPrice = totalPrice.add(book.getPrice());
             books.add(book);
         }
         for (BookEntity book : order.getBooks()) {

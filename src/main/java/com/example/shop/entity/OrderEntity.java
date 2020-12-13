@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -25,14 +24,12 @@ public class OrderEntity extends Base{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @ManyToMany
+    @JoinTable(name = "order_book", joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
+            inverseJoinColumns = { @JoinColumn(name = "book_id", referencedColumnName = "id")})
     private List<BookEntity> books;
 
     @Column(name = "total_price", nullable = false)
     private BigDecimal totalPrice;
-
-    @Column(name = "date", nullable = false)
-    private LocalDate date;
 
 }

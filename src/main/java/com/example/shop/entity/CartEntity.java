@@ -20,8 +20,9 @@ public class CartEntity extends Base{
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserEntity user;
 
-    @OneToMany
-    @JoinColumn(name = "cart_id", referencedColumnName = "id")
+    @ManyToMany
+    @JoinTable(name = "cart_book", joinColumns = { @JoinColumn(name = "cart_id", referencedColumnName = "id")},
+        inverseJoinColumns = { @JoinColumn(name = "book_id", referencedColumnName = "id") })
     private List<BookEntity> books;
 
     @Column(name = "total_price")

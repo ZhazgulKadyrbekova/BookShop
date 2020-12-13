@@ -101,6 +101,11 @@ public class UserServiceImpl implements UserService {
             roleEntity = roleRepository.save(new RoleEntity("ROLE_ADMIN"));
         user.setRole(roleEntity);
         userRepository.save(user);
+
+        HistoryEntity history = new
+                HistoryEntity("USER", "SAVED " + user.getEmail(), user);
+        historyRepository.save(history);
+
         return "Account info has been saved";
     }
 
@@ -167,7 +172,7 @@ public class UserServiceImpl implements UserService {
         UserEntity user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User id " + id + " not found!"));
         if (user.isDeleted()) {
-            throw new UserNotFoundException("User id " + id + " not found!");
+            throw new UserNotFoundException("User id " + id + " is already blocked!");
         }
 
         CartEntity cart = cartRepository.findByUser(user);

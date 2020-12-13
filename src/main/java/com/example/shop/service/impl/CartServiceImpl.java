@@ -64,9 +64,9 @@ public class CartServiceImpl implements CartService {
         cart.setTotalPrice(totalPrice);
         cartRepository.save(cart);
 
-        HistoryEntity history = new
-                HistoryEntity("CART", "UPDATE", user);
-        historyRepository.save(history);
+//        HistoryEntity history = new
+//                HistoryEntity("CART", "UPDATE", user);
+//        historyRepository.save(history);
 
         return cart;
     }

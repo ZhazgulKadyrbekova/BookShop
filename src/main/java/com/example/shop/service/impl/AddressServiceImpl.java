@@ -38,10 +38,10 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setApartment(address.getApartment());
         addressRepository.save(addressEntity);
 
-        UserEntity user = userRepository.findByEmail(email);
-        HistoryEntity history = new
-                HistoryEntity("ADDRESS", "CREATE ", user);
-        historyRepository.save(history);
+//        UserEntity user = userRepository.findByEmail(email);
+//        HistoryEntity history = new
+//                HistoryEntity("ADDRESS", "CREATE ", user);
+//        historyRepository.save(history);
 
         return addressEntity;
     }
@@ -71,10 +71,10 @@ public class AddressServiceImpl implements AddressService {
         addressEntity.setDeleted(false);
         addressRepository.save(addressEntity);
 
-        UserEntity user = userRepository.findByEmail(email);
-        HistoryEntity history = new
-                HistoryEntity("ADDRESS", "UPDATE", user);
-        historyRepository.save(history);
+//        UserEntity user = userRepository.findByEmail(email);
+//        HistoryEntity history = new
+//                HistoryEntity("ADDRESS", "UPDATE", user);
+//        historyRepository.save(history);
 
         return addressEntity;
     }
@@ -89,10 +89,10 @@ public class AddressServiceImpl implements AddressService {
         address.setDeleted(true);
         addressRepository.save(address);
 
-        UserEntity user = userRepository.findByEmail(email);
-        HistoryEntity history = new
-                HistoryEntity("ADDRESS", "DELETE", user);
-        historyRepository.save(history);
+//        UserEntity user = userRepository.findByEmail(email);
+//        HistoryEntity history = new
+//                HistoryEntity("ADDRESS", "DELETE", user);
+//        historyRepository.save(history);
 
         return "Address number " + id + " has been deleted!";
 
