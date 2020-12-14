@@ -18,9 +18,6 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private AddressRepository addressRepository;
-
-    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -42,10 +39,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderEntity createOrder(OrderDTO order, String email) {
-        OrderEntity orderEntity = new OrderEntity();
-        orderEntity.setAddress(addressRepository.findById(order.getAddress())
-                .orElseThrow(() -> new AddressNotFoundException("Address id " + order.getAddress() + " not found")));
-        orderEntity.setUser(userRepository.findByEmail(email));
+        UserEntity user = userRepository.findByEmail(email);
         List<BookEntity> books = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.ZERO;
         for (Integer item : order.getBooks()) {
@@ -61,12 +55,12 @@ public class OrderServiceImpl implements OrderService {
             books.add(book);
 
         }
-        orderEntity.setBooks(books);
-        orderEntity.setTotalPrice(totalPrice);
+
+        OrderEntity orderEntity = new OrderEntity(order.getCity(), order.getDistrict(),
+                order.getStreet(), order.getHouse(), order.getApartment(), user, books, totalPrice);
 
         orderRepository.save(orderEntity);
 
-        UserEntity user = userRepository.findByEmail(email);
         HistoryEntity history = new
                 HistoryEntity("ORDER", "CREATE", user);
         historyRepository.save(history);
@@ -75,16 +69,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderEntity findById(Integer id) {
-        OrderEntity order = orderRepository.findById(id)
-                .orElseThrow(() -> new OrderNotFoundException("Order id " + id + " not found!"));
-        if (order.isDeleted())
-            throw  new OrderNotFoundException("Order id " + id + " not found!");
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public OrderEntity update(Integer id, OrderDTO orderDTO, String email) {
+    public OrderEntity addBooks(Integer id, OrderDTO orderDTO, String email) {
         UserEntity user = userRepository.findByEmail(email);
 
         OrderEntity order = orderRepository.findById(id)
@@ -92,8 +77,6 @@ public class OrderServiceImpl implements OrderService {
         if (order.isDeleted())
             throw  new OrderNotFoundException("Order id " + id + " not found!");
 
-        order.setAddress(addressRepository.findById(orderDTO.getAddress())
-                .orElseThrow(() -> new AddressNotFoundException("Order id " + orderDTO.getAddress() + " not found!")));
         order.setUser(user);
         List<BookEntity> books = new ArrayList<>();
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -120,7 +103,25 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
 
         HistoryEntity history = new
-                HistoryEntity("ORDER", "UPDATE", user);
+                HistoryEntity("ORDER", "UPDATE: add books", user);
+        historyRepository.save(history);
+
+        return order;
+    }
+
+    @Override
+    public OrderEntity updateAddress(Integer id, OrderDTO orderEntity, String email) {
+        OrderEntity order = orderRepository.findById(id)
+                .orElseThrow(() -> new OrderNotFoundException("Order id " + id + " not found"));
+        order.setCity(orderEntity.getCity());
+        order.setDistrict(orderEntity.getDistrict());
+        order.setStreet(orderEntity.getStreet());
+        order.setHouse(orderEntity.getHouse());
+        order.setApartment(orderEntity.getApartment());
+        orderRepository.save(order);
+
+        HistoryEntity history = new
+                HistoryEntity("ORDER", "UPDATE: set address", userRepository.findByEmail(email));
         historyRepository.save(history);
 
         return order;

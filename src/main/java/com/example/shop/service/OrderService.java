@@ -9,7 +9,7 @@ public interface OrderService {
     List<OrderEntity> getAll();
     List<OrderEntity> findAllByEmail(String email);
     OrderEntity createOrder (OrderDTO orderEntity, String email);
-    OrderEntity findById(Integer id);
-    OrderEntity update(Integer id, OrderDTO orderEntity, String email);
+    OrderEntity addBooks(Integer id, OrderDTO orderEntity, String email);
+    OrderEntity updateAddress(Integer id, OrderDTO orderEntity, String email);
     String deleteById(Integer id, String email);
 }

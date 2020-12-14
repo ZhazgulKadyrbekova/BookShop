@@ -1,18 +1,14 @@
 package com.example.shop.controller;
 
 import com.example.shop.dto.OrderDTO;
-import com.example.shop.entity.BookEntity;
 import com.example.shop.entity.OrderEntity;
-import com.example.shop.repository.OrderRepository;
 import com.example.shop.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -27,13 +23,8 @@ public class OrderController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<OrderEntity> addOrder(@RequestBody OrderDTO orderEntity, Principal principal) throws Exception{
+    public ResponseEntity<OrderEntity> addOrder(@RequestBody OrderDTO orderEntity, Principal principal) {
         return new ResponseEntity<>(orderService.createOrder(orderEntity, principal.getName()), HttpStatus.OK);
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<OrderEntity> getOrder(@PathVariable Integer id) {
-        return new ResponseEntity<>(orderService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
@@ -43,7 +34,12 @@ public class OrderController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<OrderEntity> updateOrder(@PathVariable Integer id, @RequestBody OrderDTO orderEntity, Principal principal) {
-        return new ResponseEntity<>(orderService.update(id, orderEntity, principal.getName()), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.addBooks(id, orderEntity, principal.getName()), HttpStatus.OK);
+    }
+
+    @PutMapping("/updateAddress/{id}")
+    public ResponseEntity<OrderEntity> updateAddress(@PathVariable Integer id, @RequestBody OrderDTO orderEntity, Principal principal) {
+        return new ResponseEntity<>(orderService.updateAddress(id, orderEntity, principal.getName()), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
