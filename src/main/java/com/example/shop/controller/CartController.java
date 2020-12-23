@@ -1,18 +1,14 @@
 package com.example.shop.controller;
 
 import com.example.shop.dto.CartDTO;
-import com.example.shop.entity.BookEntity;
 import com.example.shop.entity.CartEntity;
-import com.example.shop.repository.CartRepository;
 import com.example.shop.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.List;
 
 @CrossOrigin
 @RestController

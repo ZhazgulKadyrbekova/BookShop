@@ -1,5 +1,6 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.repository.OrderRepository;
 import com.example.shop.dto.OrderDTO;
 import com.example.shop.entity.*;
 import com.example.shop.exception.*;
@@ -48,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 
             if (book.getQuantity() - 1 < 0)
                 throw new BookNotAvailableException("Book id " + item + " is not available now");
+            book.setQuantity(book.getQuantity() - 1);
             int quant = book.getQuantity() - 1;
             book.setQuantity(quant);
             bookRepository.save(book);
@@ -57,8 +59,15 @@ public class OrderServiceImpl implements OrderService {
 
         }
 
-        OrderEntity orderEntity = new OrderEntity(order.getCity(), order.getDistrict(),
-                order.getStreet(), order.getHouse(), order.getApartment(), user, books, totalPrice);
+        OrderEntity orderEntity = new OrderEntity();
+        orderEntity.setCity(order.getCity());
+        orderEntity.setDistrict(order.getDistrict());
+        orderEntity.setStreet(order.getStreet());
+        orderEntity.setHouse(order.getHouse());
+        orderEntity.setApartment(order.getApartment());
+        orderEntity.setUser(user);
+        orderEntity.setBooks(books);
+        orderEntity.setTotalPrice(totalPrice);
 
         orderRepository.save(orderEntity);
 

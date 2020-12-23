@@ -87,13 +87,13 @@ public class BookServiceImpl implements BookService {
         if (book.isDeleted())
             throw new BookNotFoundException("Book id " + id + " not found!");
 
-        book.setName(book.getName());
+        book.setName(bookDTO.getName());
         book.setAuthor(authorRepository.findById(bookDTO.getAuthor())
                 .orElseThrow(() -> new AuthorNotFoundException("Author id " + bookDTO.getAuthor() + " not found!")));
-        book.setPrice(book.getPrice());
-        book.setPages(book.getPages());
-        book.setLanguage(book.getLanguage());
-        book.setQuantity(book.getQuantity());
+        book.setPrice(bookDTO.getPrice());
+        book.setPages(bookDTO.getPages());
+        book.setLanguage(bookDTO.getLanguage());
+        book.setQuantity(bookDTO.getQuantity());
         book.setCategory(categoryRepository.findById(bookDTO.getCategory())
                 .orElseThrow(() -> new CategoryNotFoundException("Category id " + bookDTO.getCategory() + " not found!")));
         book.setDeleted(false);

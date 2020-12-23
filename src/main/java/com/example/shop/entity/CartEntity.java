@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "cart")
-public class CartEntity extends Base{
+public class CartEntity extends Base {
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

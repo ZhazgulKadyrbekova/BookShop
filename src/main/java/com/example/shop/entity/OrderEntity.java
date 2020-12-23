@@ -13,8 +13,8 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "`order`")
-public class OrderEntity extends Base{
+@Table(name = "orders")
+public class OrderEntity extends Base {
 
     @Column(name = "city")
     private String city;
@@ -36,8 +36,9 @@ public class OrderEntity extends Base{
     private UserEntity user;
 
     @ManyToMany
-    @JoinTable(name = "order_book", joinColumns = {@JoinColumn(name = "order_id", referencedColumnName = "id")},
-            inverseJoinColumns = { @JoinColumn(name = "book_id", referencedColumnName = "id")})
+    @JoinTable(name = "order_book", joinColumns = {
+            @JoinColumn(name = "orders_id") }, inverseJoinColumns = {
+            @JoinColumn(name = "book_id") })
     private List<BookEntity> books;
 
     @Column(name = "total_price", nullable = false)

@@ -1,17 +1,14 @@
 package com.example.shop.controller;
 
-import com.example.shop.dto.UserAuthDTO;
 import com.example.shop.dto.UserPasswordDTO;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;

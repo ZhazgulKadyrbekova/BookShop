@@ -16,5 +16,5 @@ public class OrderDTO {
     private String street;
     private String house;
     private String apartment;
-    private List<int> books;
+    private List<Integer> books;
 }

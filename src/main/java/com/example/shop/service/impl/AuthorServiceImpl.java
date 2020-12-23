@@ -5,7 +5,6 @@ import com.example.shop.entity.AuthorEntity;
 import com.example.shop.entity.HistoryEntity;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.exception.AuthorNotFoundException;
-import com.example.shop.exception.UserNotFoundException;
 import com.example.shop.repository.AuthorRepository;
 import com.example.shop.repository.HistoryRepository;
 import com.example.shop.repository.UserRepository;

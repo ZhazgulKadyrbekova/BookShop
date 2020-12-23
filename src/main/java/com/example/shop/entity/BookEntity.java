@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "book")
-public class BookEntity extends Base{
+public class BookEntity extends Base {
 
     @Column(name = "name", length = 50, nullable = false)
     private String name;
@@ -26,13 +26,13 @@ public class BookEntity extends Base{
     private BigDecimal price;
 
     @Column(name = "pages")
-    private int pages;
+    private Integer pages;
 
     @Column(name = "language", length = 3)
     private String language;
 
     @Column(name = "quantity", nullable = false)
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
