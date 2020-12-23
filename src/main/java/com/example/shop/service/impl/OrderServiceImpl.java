@@ -48,7 +48,8 @@ public class OrderServiceImpl implements OrderService {
 
             if (book.getQuantity() - 1 < 0)
                 throw new BookNotAvailableException("Book id " + item + " is not available now");
-            book.setQuantity(book.getQuantity()-1);
+            int quant = book.getQuantity() - 1;
+            book.setQuantity(quant);
             bookRepository.save(book);
 
             totalPrice = totalPrice.add(book.getPrice());
