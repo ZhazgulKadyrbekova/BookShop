@@ -14,8 +14,8 @@ public class BookDTO {
     private String name;
     private Integer author;
     private BigDecimal price;
-    private Integer pages;
+    private int pages;
     private String language;
-    private Integer quantity;
+    private int quantity;
     private Integer category;
 }
