@@ -3,6 +3,7 @@ package com.example.shop.controller;
 import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserAuthDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.dto.UserForgotP;
 import com.example.shop.service.UserService;
 import com.example.shop.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,9 @@ public class AuthController {
         return userService.activateUser(code);
     }
 
-    @PostMapping("/forgotPassword/{email}")
-    public String sendForgottenPassword(@PathVariable("email") String email) {
-        return userService.sendForgottenPassword(email);
+    @PostMapping("/forgotPassword")
+    public String sendForgottenPassword(@RequestBody UserForgotP user) {
+        return userService.sendForgottenPassword(user);
     }
 
     @PostMapping("/auth")

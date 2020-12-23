@@ -4,6 +4,8 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.dto.UserForgotP;
+import com.example.shop.dto.UserPasswordDTO;
 import com.example.shop.entity.*;
 import com.example.shop.exception.UserNotFoundException;
 import com.example.shop.repository.*;
@@ -128,19 +130,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String sendForgottenPassword(String email) {
-        UserEntity user = userRepository.findByEmail(email);
-        String message = "Link to reset forgotten password: '/register/changePassword";
-        if (user != null && mailService.send(user.getEmail(), "reset password", message))
+    public String sendForgottenPassword(UserForgotP userForgotP) {
+        UserEntity user = userRepository.findByEmail(userForgotP.getEmail());
+        if (!userForgotP.getPassword().equals(userForgotP.getPassword2())) {
+            return "Confirmed password is not same!";
+        }
+        user.setPassword(encoder.encode(userForgotP.getPassword()));
+        user.setDeleted(true);
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        String message = "Link to reset forgotten password: '/register/activate/" +
+                user.getActivationCode();
+        if (mailService.send(user.getEmail(), "reset password", message)) {
+            userRepository.save(user);
+
             return "Recovery code sent to your email";
-        else return "Something went wrong";
+        } else return "Something went wrong";
     }
 
     @Override
-    public String changePassword(String email, String password) {
+    public String changePassword(UserPasswordDTO userPasswordDTO, String email) {
         UserEntity user = userRepository.findByEmail(email);
         if (user != null) {
-            user.setPassword(encoder.encode(password));
+            if (!encoder.matches(userPasswordDTO.getOldPassword(), user.getPassword()))
+                return "Old password is not correct";
+            if (!userPasswordDTO.getNewPassword().equals(userPasswordDTO.getNewPassword2()))
+                return "Confirmed password is not same!";
+            user.setPassword(encoder.encode(userPasswordDTO.getNewPassword()));
             userRepository.save(user);
 
             HistoryEntity history = new
@@ -220,7 +236,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserEntity setImage(MultipartFile multipartFile, String email) throws IOException {
-        final String urlKey = "clo";
+        final String urlKey = "cloudinary://122578963631996:RKDo37y7ru4nnuLsBGQbwBUk65o@zhazgul/";
 
         ImageEntity image = new ImageEntity();
         File file;

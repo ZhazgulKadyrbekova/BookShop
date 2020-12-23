@@ -1,6 +1,7 @@
 package com.example.shop.controller;
 
 import com.example.shop.dto.UserAuthDTO;
+import com.example.shop.dto.UserPasswordDTO;
 import com.example.shop.entity.UserEntity;
 import com.example.shop.service.UserService;
 import org.apache.catalina.User;
@@ -62,8 +63,8 @@ public class UserController {
     }
 
     @PutMapping("/changePassword")
-    public String changePassword(@RequestBody UserAuthDTO userAuthDTO) {
-        return userService.changePassword(userAuthDTO.getEmail(), userAuthDTO.getPassword());
+    public String changePassword(@RequestBody UserPasswordDTO userPasswordDTO, Principal principal) {
+        return userService.changePassword(userPasswordDTO, principal.getName());
     }
 
     @PutMapping("/setImage")

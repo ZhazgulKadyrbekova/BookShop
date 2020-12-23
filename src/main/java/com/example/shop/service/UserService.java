@@ -2,6 +2,8 @@ package com.example.shop.service;
 
 import com.example.shop.dto.UserAdminDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.dto.UserForgotP;
+import com.example.shop.dto.UserPasswordDTO;
 import com.example.shop.entity.UserEntity;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,8 +15,8 @@ public interface UserService {
     String createAdmin(UserAdminDTO user);
     String saveAdmin(UserDTO userDTO);
     String activateUser(String code);
-    String sendForgottenPassword(String email);
-    String changePassword(String email, String password);
+    String sendForgottenPassword(UserForgotP user);
+    String changePassword(UserPasswordDTO userPasswordDTO, String email);
 
     List<UserEntity> getAll();
     List<UserEntity> getAllByName(String name);
