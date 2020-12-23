@@ -26,13 +26,13 @@ public class BookEntity extends Base{
     private BigDecimal price;
 
     @Column(name = "pages")
-    private Integer pages;
+    private int pages;
 
     @Column(name = "language", length = 3)
     private String language;
 
     @Column(name = "quantity", nullable = false)
-    private Integer quantity;
+    private int quantity;
 
     @ManyToOne
     @JoinColumn(name = "category_id", referencedColumnName = "id")
